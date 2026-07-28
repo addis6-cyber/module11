@@ -8,4 +8,10 @@
   <button (click)="registerForClass()">
     Register for a Class (+3 credits)
   </button>
+  <h2>Available Courses</h2>
+
+<tms-course-card
+  [course]="sampleCourse"
+  (enrollClicked)="handleEnroll($event)"
+/>
 </div>
