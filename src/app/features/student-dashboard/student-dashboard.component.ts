@@ -5,10 +5,17 @@ import { CourseService } from '../../services/course.service';
 import { CourseCardComponent } from '../../ui/course-card/course-card';
 import { Course } from '../../models/course.model';
 
+import { EnrollmentList } from '../enrollment-list/enrollment-list';
+import { EnrollmentSummary } from '../enrollment-summary/enrollment-summary';
+
 @Component({
   selector: 'app-student-dashboard',
   standalone: true,
-  imports: [CourseCardComponent],
+  imports: [
+  CourseCardComponent,
+  EnrollmentList,
+  EnrollmentSummary
+],
   templateUrl: './student-dashboard.component.html',
   styleUrl: './student-dashboard.component.scss'
 })

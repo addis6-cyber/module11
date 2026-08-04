@@ -11,6 +11,17 @@
 
  <h2>Course Catalog</h2>
 
+<hr />
+
+<h2>Enrollment Command Center</h2>
+
+<div class="command-center">
+  <tms-enrollment-summary />
+  <tms-enrollment-list />
+</div>
+
+<hr />
+
 @if (coursesResource.isLoading()) {
   <div class="spinner">
     Fetching courses from the server...
