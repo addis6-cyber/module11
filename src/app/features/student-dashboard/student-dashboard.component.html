@@ -9,18 +9,33 @@
     Register for a Class (+3 credits)
   </button>
 
+<hr />
+
+<h2>Quick Navigation</h2>
+
+<nav class="quick-links">
+
+  <a routerLink="/enroll">
+    Enrollment Form
+  </a>
+
+  <a routerLink="/enrollments">
+    Enrollment List
+  </a>
+
+  <a routerLink="/dashboard">
+    Student Dashboard
+  </a>
+
+  <a routerLink="/instructor">
+    Instructor Command Center
+  </a>
+
+</nav>
+
+<hr />
+
  <h2>Course Catalog</h2>
-
-<hr />
-
-<h2>Enrollment Command Center</h2>
-
-<div class="command-center">
-  <tms-enrollment-summary />
-  <tms-enrollment-list />
-</div>
-
-<hr />
 
 @if (coursesResource.isLoading()) {
   <div class="spinner">

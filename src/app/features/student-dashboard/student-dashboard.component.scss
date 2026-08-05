@@ -1,0 +1,21 @@
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.quick-links a {
+  text-decoration: none;
+  color: #2563eb;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: 1px solid #2563eb;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.quick-links a:hover {
+  background: #2563eb;
+  color: white;
+}

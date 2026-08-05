@@ -7,11 +7,12 @@ import { Course } from '../../models/course.model';
 
 import { EnrollmentList } from '../enrollment-list/enrollment-list';
 import { EnrollmentSummary } from '../enrollment-summary/enrollment-summary';
-
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-student-dashboard',
   standalone: true,
-  imports: [
+ imports: [
+  RouterLink,
   CourseCardComponent,
   EnrollmentList,
   EnrollmentSummary

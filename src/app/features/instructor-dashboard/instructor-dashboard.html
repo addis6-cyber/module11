@@ -24,7 +24,7 @@
 <!-- Deferred chart -->
 <div class="chart-section">
 
-  @defer (on viewport; prefetch on idle(500)) {
+  @defer (on viewport; prefetch on idle) {
 
     <tms-analytics-chart
       [data]="store.entities()"
