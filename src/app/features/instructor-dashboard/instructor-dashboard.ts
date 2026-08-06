@@ -13,7 +13,9 @@ export class InstructorDashboard implements OnInit {
 
   store = inject(EnrollmentStore);
 
-  ngOnInit() {
+ ngOnInit() {
+  if (this.store.entities().length === 0) {
     this.store.loadEnrollments();
   }
+}
 }
