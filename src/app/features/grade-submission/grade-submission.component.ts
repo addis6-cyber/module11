@@ -1,4 +1,9 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  ChangeDetectorRef,
+  inject
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
@@ -6,7 +11,7 @@ import {
   Validators
 } from '@angular/forms';
 
-import { Subject, exhaustMap } from 'rxjs';
+import { Subject, exhaustMap, tap } from 'rxjs';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -37,7 +42,8 @@ import {
 export class GradeSubmissionComponent {
 
   private api = inject(GradeService);
-
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
 
   gradeForm = this.fb.group({
@@ -68,30 +74,43 @@ constructor() {
         this.submissionStatus =
           'Submitting grade to server...';
 
-        return this.api.postGrade(payload);
+        
+
+        return this.api.postGrade(payload).pipe(
+  
+);
       }),
 
-      takeUntilDestroyed()
+      takeUntilDestroyed(this.destroyRef)
 
     )
     .subscribe({
 
-      next: result => {
+     next: result => {
 
-        this.isSubmitting = false;
+  console.log('GRADE RESULT', result);
 
-        this.submissionStatus =
-          `Grade saved successfully! Record ID: ${result.id}`;
-      },
+  this.isSubmitting = false;
+
+  this.submissionStatus =
+    'Grade saved successfully! Record ID: ' + result.id;
+
+  this.cdr.detectChanges();
+},
 
       error: err => {
 
-        this.isSubmitting = false;
+  this.isSubmitting = false;
 
-        this.submissionStatus =
-          `Submission failed: ${err.message || 'Server error'}`;
-      }
+  this.submissionStatus =
+    `Submission failed: ${err.message || 'Server error'}`;
+
+  this.cdr.detectChanges();
+},
     });
+    complete: () => {
+  
+}
 }
 onSubmit() {
 
