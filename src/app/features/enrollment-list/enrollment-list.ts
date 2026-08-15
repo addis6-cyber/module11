@@ -2,6 +2,7 @@ import { Component, viewChild, effect, inject } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
+import { SignalrService } from '../../services/signalr/signalr';
 
 import { EnrollmentStore } from '../../store/enrollment.store';
 import { Enrollment } from '../../models/enrollment.model';
@@ -21,7 +22,7 @@ import { EnrollmentSummary } from '../enrollment-summary/enrollment-summary';
 export class EnrollmentList {
 
   store = inject(EnrollmentStore);
-
+  signalr = inject(SignalrService);
   displayedColumns = [
     'studentName',
     'courseName',
@@ -46,5 +47,9 @@ export class EnrollmentList {
     });
 
     this.store.loadEnrollments();
+    this.signalr.start();
+    this.signalr.enrollmentApproved$.subscribe(event => {
+  console.log('Enrollment approval received:', event);
+  });
   }
 }
