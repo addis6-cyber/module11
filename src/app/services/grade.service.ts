@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 export interface GradePayload {
   studentId: number;
   courseId: number;
@@ -20,7 +20,7 @@ export class GradeService {
   ): Observable<{ id: string; success: boolean }> {
 
     return this.http.post<{ id: string; success: boolean }>(
-      'http://localhost:5063/api/grades',
+      `${environment.apiBaseUrl}/api/grades`,
       payload
     );
   }

@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Course, CourseDetail, PagedResponse } from '../models/course.model';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,11 +13,11 @@ export class CourseService {
   private http = inject(HttpClient);
 
   // Use YOUR API URL
-  private baseUrl = 'http://localhost:5063/api/courses';
+ private apiUrl = `${environment.apiBaseUrl}/api/courses`;
 
   getAll(page = 1, pageSize = 50) {
     return this.http
-      .get<PagedResponse<Course>>(this.baseUrl, {
+      .get<PagedResponse<Course>>(this.apiUrl, {
         params: {
           page: page.toString(),
           pageSize: pageSize.toString(),
@@ -25,6 +27,6 @@ export class CourseService {
   }
 
   getById(id: string) {
-    return this.http.get<CourseDetail>(`${this.baseUrl}/${id}`);
+    return this.http.get<CourseDetail>(`${this.apiUrl}/${id}`);
   }
 }

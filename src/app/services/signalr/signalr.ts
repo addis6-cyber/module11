@@ -5,14 +5,14 @@ import {
   HubConnectionBuilder,
   LogLevel
 } from '@microsoft/signalr';
-
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class SignalrService {
 
   private readonly hubUrl =
-  'http://localhost:5063/hubs/enrollments';
+  `${environment.apiBaseUrl}/hubs/enrollments`;
 
   private connection: HubConnection | null = null;
 
