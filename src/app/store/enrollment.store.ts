@@ -82,9 +82,8 @@ export const EnrollmentStore = signalStore(
           );
         }),
 
-      
-      
-        concatMap(id =>
+    
+       concatMap(id =>
           api.approve(id).pipe(
 
             catchError(() => {
@@ -108,5 +107,18 @@ export const EnrollmentStore = signalStore(
       )
     ),
 
+    markApproved: (id: string) => {
+  patchState(
+    store,
+    updateEntity({
+      id,
+      changes: {
+        status: 'Approved'
+      }
+    })
+  );
+},
+
   }))
 );
+

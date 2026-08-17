@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { EnrollmentStore } from '../../store/enrollment.store';
 import { AnalyticsChart } from '../../ui/analytics-chart/analytics-chart';
+import { SignalrService } from '../../services/signalr/signalr';
 
 @Component({
   selector: 'tms-instructor-dashboard',
@@ -13,9 +14,16 @@ export class InstructorDashboard implements OnInit {
 
   store = inject(EnrollmentStore);
 
+  signalr = inject(SignalrService);
+
  ngOnInit() {
-  if (this.store.entities().length === 0) {
-    this.store.loadEnrollments();
-  }
+  this.store.loadEnrollments();
+  this.signalr.start();
+
+  this.signalr.enrollmentApproved$.subscribe(event => {
+    console.log('Instructor dashboard received approval:', event);
+
+    this.store.markApproved(String(event.id));
+  });
 }
 }

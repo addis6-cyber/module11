@@ -50,6 +50,8 @@ export class EnrollmentList {
     this.signalr.start();
     this.signalr.enrollmentApproved$.subscribe(event => {
   console.log('Enrollment approval received:', event);
-  });
+
+  this.store.markApproved(String(event.id));
+});
   }
 }
