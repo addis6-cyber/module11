@@ -12,6 +12,7 @@ import {
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './enrollment-form.html',
+  styleUrl: './enrollment-form.scss',
 })
 export class EnrollmentForm {
 
