@@ -1,17 +1,41 @@
-import { ApplicationConfig, provideZonelessChangeDetection } from "@angular/core";
-import { provideRouter, withComponentInputBinding } from "@angular/router";
-import { provideHttpClient, withInterceptors } from "@angular/common/http";
+import {
+  ApplicationConfig,
+  provideZonelessChangeDetection
+} from "@angular/core";
+
+import {
+  provideRouter,
+  withComponentInputBinding
+} from "@angular/router";
+
+import {
+  provideHttpClient,
+  withInterceptors,
+  withXsrfConfiguration
+} from "@angular/common/http";
 
 import { routes } from "./app.routes";
+
 import { credentialsInterceptor } from './core/interceptors/credentials.interceptor';
 
+import { errorInterceptor } from './core/interceptors/error.interceptor';
+
 export const appConfig: ApplicationConfig = {
+
   providers: [
 
     provideHttpClient(
+
       withInterceptors([
-        credentialsInterceptor
-      ])
+        credentialsInterceptor,
+        errorInterceptor
+      ]),
+
+      withXsrfConfiguration({
+        cookieName: 'XSRF-TOKEN',
+        headerName: 'X-XSRF-TOKEN'
+      })
+
     ),
 
     provideZonelessChangeDetection(),
@@ -19,7 +43,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withComponentInputBinding()
-    ),
+    )
 
-  ],
+  ]
+
 };

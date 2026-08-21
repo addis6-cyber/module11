@@ -22,4 +22,10 @@ export class EnrollmentService {
   approve(id: string): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/${id}/approve`, {});
   }
+
+  delete(id: string): Observable<void> {
+  return this.http.delete<void>(
+    `${this.apiUrl}/${id}`
+  );
+}
 }
