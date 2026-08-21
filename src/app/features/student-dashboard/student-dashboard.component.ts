@@ -24,7 +24,7 @@ export class StudentDashboardComponent {
 
   private api = inject(CourseService);
 
-  studentName = signal('Liya Kebede');
+  studentName = signal('Addisu Sheko');
 
   earnedCredits = signal(45);
 
