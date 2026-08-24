@@ -63,6 +63,14 @@
         </button>
       }
 
+      <button
+  type="button"
+  (click)="deleteEnrollment(row)"
+  [disabled]="deletingId() === row.id"
+>
+  {{ deletingId() === row.id ? 'Deleting...' : 'Delete' }}
+</button>
+
     </td>
   </ng-container>
 

@@ -1,12 +1,13 @@
-import { Component, viewChild, effect, inject } from '@angular/core';
+import { Component, viewChild, effect, inject, signal } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { SignalrService } from '../../services/signalr/signalr';
-
 import { EnrollmentStore } from '../../store/enrollment.store';
 import { Enrollment } from '../../models/enrollment.model';
 import { EnrollmentSummary } from '../enrollment-summary/enrollment-summary';
+import { EnrollmentService } from '../../services/enrollment';
+
 @Component({
   selector: 'tms-enrollment-list',
   standalone: true,
@@ -23,6 +24,8 @@ export class EnrollmentList {
 
   store = inject(EnrollmentStore);
   signalr = inject(SignalrService);
+  private enrollmentService = inject(EnrollmentService);
+  deletingId = signal<string | null>(null);
   displayedColumns = [
     'studentName',
     'courseName',
@@ -54,4 +57,28 @@ export class EnrollmentList {
   this.store.markApproved(String(event.id));
 });
   }
+
+  deleteEnrollment(enrollment: Enrollment) {
+  this.deletingId.set(enrollment.id);
+
+  const previousData = [...this.dataSource.data];
+
+  this.dataSource.data = this.dataSource.data.filter(
+    item => item.id !== enrollment.id
+  );
+
+  this.enrollmentService.delete(enrollment.id).subscribe({
+    next: () => {
+      this.deletingId.set(null);
+    },
+
+    error: (err) => {
+      console.error('Delete failed:', err);
+
+      this.dataSource.data = previousData;
+
+      this.deletingId.set(null);
+    }
+  });
+}
 }
