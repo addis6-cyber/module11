@@ -4,7 +4,6 @@ import {
 } from '@angular/common/http';
 
 import { inject } from '@angular/core';
-
 import { Router } from '@angular/router';
 
 import {
@@ -34,11 +33,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           'API Error Response:',
           detailMessage
         );
-
       }
 
       return throwError(() => err);
     })
-
   );
 };

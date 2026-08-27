@@ -1,8 +1,17 @@
 import { Routes } from '@angular/router';
-
+import { authGuard } from './core/auth/auth-guard';
 export const routes: Routes = [
+
+  {
+  path: 'login',
+  loadComponent: () =>
+    import('./features/login/login')
+      .then(m => m.LoginComponent)
+},
+
   {
   path: 'dashboard',
+  canActivate: [authGuard],
   loadComponent: () =>
     import('./features/student-dashboard/student-dashboard.component')
       .then(m => m.StudentDashboardComponent)
@@ -10,12 +19,14 @@ export const routes: Routes = [
 
 {
   path: 'instructor',
+  canActivate: [authGuard],
   loadComponent: () =>
     import('./features/instructor-dashboard/instructor-dashboard')
       .then(m => m.InstructorDashboard)
 },
   {
     path: 'courses/:id',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./features/course-detail/course-detail')
         .then(m => m.CourseDetail)
@@ -23,12 +34,14 @@ export const routes: Routes = [
 
   {
   path: 'enroll',
+  canActivate: [authGuard],
   loadComponent: () =>
     import('./features/enrollment-form/enrollment-form')
       .then(m => m.EnrollmentForm)
 },
   {
   path: 'enrollments',
+  canActivate: [authGuard],
   loadComponent: () =>
     import('./features/enrollment-list/enrollment-list')
       .then(m => m.EnrollmentList)
@@ -36,6 +49,7 @@ export const routes: Routes = [
 
 {
   path: 'grade-submission',
+  canActivate: [authGuard],
   loadComponent: () =>
     import('./features/grade-submission/grade-submission.component')
       .then(m => m.GradeSubmissionComponent)

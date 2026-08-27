@@ -1,6 +1,10 @@
 <div class="dashboard">
   <h1>Welcome, {{ studentName() }}</h1>
 
+  <button (click)="logout()">
+        Logout
+  </button>
+
   <p>Credits Earned: {{ earnedCredits() }}</p>
 
   <p>Graduation Status: {{ graduationStatus() }}</p>
