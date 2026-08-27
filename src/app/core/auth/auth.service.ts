@@ -32,11 +32,11 @@ export class AuthService {
     });
   }
 
-  login(username: string, password: string) {
+  login(email: string, password: string) {
     return this.http.post<LoginResponse>(
       `${this.apiUrl}/login`,
       {
-        username,
+        email,
         password
       }
     );
