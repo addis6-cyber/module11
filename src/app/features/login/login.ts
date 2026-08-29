@@ -25,11 +25,15 @@ export class LoginComponent {
     this.isLoading = true;
 
     this.auth.login(this.email, this.password).subscribe({
-      next: user => {
-        this.auth.setUser(user);
+      next: response => {
+
+        this.auth.saveTokens(response);
+
         this.isLoading = false;
+
         this.router.navigate(['/dashboard']);
       },
+
       error: () => {
         this.error = 'Invalid email or password.';
         this.isLoading = false;

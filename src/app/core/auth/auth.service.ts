@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 export interface LoginResponse {
-  displayName: string;
-  role: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 @Injectable({
@@ -26,9 +26,16 @@ export class AuthService {
   }
 
   loadUser() {
-    this.me().subscribe({
-      next: user => this.user.set(user),
-      error: () => this.user.set(null)
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (!accessToken) {
+      this.user.set(null);
+      return;
+    }
+
+    this.user.set({
+      accessToken,
+      refreshToken: localStorage.getItem('refreshToken') ?? ''
     });
   }
 
@@ -42,18 +49,34 @@ export class AuthService {
     );
   }
 
-  logout() {
-    return this.http.post(
-      `${this.apiUrl}/logout`,
-      {}
+  saveTokens(response: LoginResponse) {
+    localStorage.setItem(
+      'accessToken',
+      response.accessToken
     );
+
+    localStorage.setItem(
+      'refreshToken',
+      response.refreshToken
+    );
+
+    this.user.set(response);
   }
+
+  logout() {
+  return this.http.post(
+    `${this.apiUrl}/logout`,
+    {}
+  );
+}
 
   setUser(user: LoginResponse) {
     this.user.set(user);
   }
 
   clearUser() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     this.user.set(null);
   }
 }
