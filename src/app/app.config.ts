@@ -20,16 +20,18 @@ import { credentialsInterceptor } from './core/interceptors/credentials.intercep
 
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 
+import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
+
 export const appConfig: ApplicationConfig = {
 
   providers: [
 
-    provideHttpClient(
-
-      withInterceptors([
-        credentialsInterceptor,
-        errorInterceptor
-      ]),
+   provideHttpClient(
+  withInterceptors([
+    credentialsInterceptor,
+    errorInterceptor,
+    jwtInterceptor
+  ]),
 
       withXsrfConfiguration({
         cookieName: 'XSRF-TOKEN',

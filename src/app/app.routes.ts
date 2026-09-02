@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth-guard';
+import { roleGuard } from './guards/role.guard';
 export const routes: Routes = [
 
   {
@@ -16,6 +17,7 @@ export const routes: Routes = [
     import('./features/student-dashboard/student-dashboard.component')
       .then(m => m.StudentDashboardComponent)
 },
+
 
 {
   path: 'instructor',
