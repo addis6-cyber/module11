@@ -1,0 +1,233 @@
+<div class="registration-container">
+
+  <div class="registration-card">
+
+
+<!-- Brand -->
+<div class="brand">
+  <div class="brand-icon">🎓</div>
+
+  <div>
+    <h1>TMS</h1>
+    <p>Training Management System</p>
+  </div>
+</div>
+
+<!-- Welcome -->
+<div class="welcome">
+  <h2>Create Your Account</h2>
+  <p>Join the Training Management System today</p>
+</div>
+
+<!-- Error -->
+@if (errorMessage) {
+  <div class="error-message">
+    <span>⚠</span>
+    <span>{{ errorMessage }}</span>
+  </div>
+}
+
+<!-- Success -->
+@if (successMessage) {
+  <div class="success-message">
+    <span>✓</span>
+    <span>{{ successMessage }}</span>
+  </div>
+}
+
+<form
+  [formGroup]="registrationForm"
+  (ngSubmit)="register()">
+
+  <!-- First Name + Last Name -->
+  <div class="form-row">
+
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+
+      <div class="input-wrapper">
+        <span class="input-icon">👤</span>
+
+        <input
+          id="firstName"
+          type="text"
+          formControlName="firstName"
+          placeholder="First name"
+        />
+      </div>
+
+      @if (
+        registrationForm.controls.firstName.touched &&
+        registrationForm.controls.firstName.invalid
+      ) {
+        <small>First name is required.</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+
+      <div class="input-wrapper">
+        <span class="input-icon">👤</span>
+
+        <input
+          id="lastName"
+          type="text"
+          formControlName="lastName"
+          placeholder="Last name"
+        />
+      </div>
+
+      @if (
+        registrationForm.controls.lastName.touched &&
+        registrationForm.controls.lastName.invalid
+      ) {
+        <small>Last name is required.</small>
+      }
+    </div>
+
+  </div>
+
+  <!-- Email -->
+  <div class="form-group">
+    <label for="email">Email Address</label>
+
+    <div class="input-wrapper">
+      <span class="input-icon">✉</span>
+
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="Enter your email"
+      />
+    </div>
+
+    @if (
+      registrationForm.controls.email.touched &&
+      registrationForm.controls.email.hasError('required')
+    ) {
+      <small>Email is required.</small>
+    }
+
+    @if (
+      registrationForm.controls.email.touched &&
+      registrationForm.controls.email.hasError('email')
+    ) {
+      <small>Please enter a valid email address.</small>
+    }
+  </div>
+
+  <!-- Password -->
+  <div class="form-group">
+    <label for="password">Password</label>
+
+    <div class="input-wrapper">
+      <span class="input-icon">🔒</span>
+
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="Create a password"
+      />
+    </div>
+
+    @if (
+      registrationForm.controls.password.touched &&
+      registrationForm.controls.password.hasError('required')
+    ) {
+      <small>Password is required.</small>
+    }
+
+    @if (
+      registrationForm.controls.password.touched &&
+      registrationForm.controls.password.hasError('minlength')
+    ) {
+      <small>Password must be at least 12 characters.</small>
+    }
+  </div>
+
+  <!-- Confirm Password -->
+  <div class="form-group">
+    <label for="confirmPassword">Confirm Password</label>
+
+    <div class="input-wrapper">
+      <span class="input-icon">🔐</span>
+
+      <input
+        id="confirmPassword"
+        type="password"
+        formControlName="confirmPassword"
+        placeholder="Confirm your password"
+      />
+    </div>
+
+    @if (
+      registrationForm.controls.confirmPassword.touched &&
+      registrationForm.controls.confirmPassword.invalid
+    ) {
+      <small>Please confirm your password.</small>
+    }
+  </div>
+
+  <!-- Role -->
+  <div class="form-group">
+    <label for="role">Account Type</label>
+
+    <div class="input-wrapper">
+      <span class="input-icon">🎯</span>
+
+      <select
+        id="role"
+        formControlName="role">
+
+        <option value="Student">Student</option>
+        <option value="Instructor">Instructor</option>
+
+      </select>
+    </div>
+  </div>
+
+  <!-- Register -->
+  <button
+    type="submit"
+    class="register-button"
+    [disabled]="isSubmitting">
+
+    @if (isSubmitting) {
+      <span>Creating Account...</span>
+    } @else {
+      <span>Create Account</span>
+      <span class="arrow">→</span>
+    }
+
+  </button>
+
+</form>
+
+<!-- Login -->
+<div class="login-section">
+
+  <p>Already have an account?</p>
+
+  <button
+    type="button"
+    class="login-button"
+    (click)="goToLogin()">
+
+    Back to Login
+
+  </button>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>© 2026 Training Management System</p>
+</div>
+
+
+  </div>
+
+</div>

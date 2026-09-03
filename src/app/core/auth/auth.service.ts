@@ -18,6 +18,14 @@ export interface LoginResponse {
   refreshToken: string;
 }
 
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -144,4 +152,12 @@ export class AuthService {
 
     this.decodeUser(response.accessToken);
   }
+
+  register(request: RegisterRequest) {
+  return this.http.post(
+    `${this.apiUrl}/register`,
+    request
+  );
+}
+  
 }

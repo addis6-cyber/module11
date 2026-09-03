@@ -10,6 +10,13 @@ export const routes: Routes = [
       .then(m => m.LoginComponent)
 },
 
+{
+  path: 'register',
+  loadComponent: () =>
+    import('./features/registration/registration')
+      .then(m => m.RegistrationComponent)
+},
+
   {
   path: 'dashboard',
   canActivate: [authGuard],
@@ -17,7 +24,6 @@ export const routes: Routes = [
     import('./features/student-dashboard/student-dashboard.component')
       .then(m => m.StudentDashboardComponent)
 },
-
 
 {
   path: 'instructor',
@@ -57,6 +63,20 @@ export const routes: Routes = [
       .then(m => m.GradeSubmissionComponent)
 },
 
+{
+  path: 'admin/courses',
+  canActivate: [roleGuard('Admin')],
+  loadComponent: () =>
+    import('./features/instructor-dashboard/instructor-dashboard')
+      .then(m => m.InstructorDashboard)
+},
+
+{
+  path: 'unauthorized',
+  loadComponent: () =>
+    import('./features/login/login')
+      .then(m => m.LoginComponent)
+},
 
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 ];
