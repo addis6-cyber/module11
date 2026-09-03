@@ -1,51 +1,377 @@
-<!-- Renders instantly -->
-<div class="dashboard-header">
-  <h1>Instructor Command Center</h1>
+<div class="instructor-dashboard">
 
-  <div class="kpi-row">
+  <!-- =========================
+       HEADER
+  ========================== -->
 
-    <div class="kpi-card">
-      <span class="kpi-value">
-        {{ store.entities().length }}
-      </span>
-      <span class="kpi-label">Total Enrollments</span>
+  <header class="dashboard-header">
+
+    <div class="header-content">
+
+      <div class="welcome-section">
+
+        <div class="header-icon">
+          🎓
+        </div>
+
+        <div>
+          <span class="eyebrow">
+            INSTRUCTOR PORTAL
+          </span>
+
+          <h1>
+            Instructor Command Center
+          </h1>
+
+          <p>
+            Monitor enrollments, manage approvals, and track course activity.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="live-status">
+        <span class="status-dot"></span>
+        Live
+      </div>
+
     </div>
+
+  </header>
+
+
+  <!-- =========================
+       KPI CARDS
+  ========================== -->
+
+  <section class="kpi-section">
+
+    <div class="kpi-card total">
+
+      <div class="kpi-icon">
+        📚
+      </div>
+
+      <div class="kpi-content">
+
+        <span class="kpi-label">
+          Total Enrollments
+        </span>
+
+        <strong class="kpi-value">
+          {{ store.entities().length }}
+        </strong>
+
+        <span class="kpi-description">
+          All enrollment requests
+        </span>
+
+      </div>
+
+    </div>
+
 
     <div class="kpi-card pending">
-      <span class="kpi-value">
-        {{ store.pendingCount() }}
+
+      <div class="kpi-icon">
+        ⏳
+      </div>
+
+      <div class="kpi-content">
+
+        <span class="kpi-label">
+          Pending Approval
+        </span>
+
+        <strong class="kpi-value">
+          {{ store.pendingCount() }}
+        </strong>
+
+        <span class="kpi-description">
+          Waiting for review
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="kpi-card approved">
+
+      <div class="kpi-icon">
+        ✓
+      </div>
+
+      <div class="kpi-content">
+
+        <span class="kpi-label">
+          Approved
+        </span>
+
+        <strong class="kpi-value">
+          {{ store.entities().length - store.pendingCount() }}
+        </strong>
+
+        <span class="kpi-description">
+          Successfully approved
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       QUICK ACTIONS
+  ========================== -->
+
+  <section class="quick-actions-section">
+
+    <div class="section-heading">
+
+      <div>
+
+        <span class="section-label">
+          INSTRUCTOR TOOLS
+        </span>
+
+        <h2>
+          Quick Actions
+        </h2>
+
+        <p>
+          Access your most important instructor tools.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="quick-actions-grid">
+
+      <!-- Enrollment Management -->
+
+      <a
+        routerLink="/enrollments"
+        class="action-card">
+
+        <div class="action-icon">
+          📝
+        </div>
+
+        <div class="action-content">
+
+          <h3>
+            Enrollment Management
+          </h3>
+
+          <p>
+            Review and manage student enrollment requests.
+          </p>
+
+        </div>
+
+        <span class="action-arrow">
+          →
+        </span>
+
+      </a>
+
+
+      <!-- Analytics -->
+
+      <a
+        routerLink="/instructor"
+        class="action-card">
+
+        <div class="action-icon">
+          📊
+        </div>
+
+        <div class="action-content">
+
+          <h3>
+            Analytics Dashboard
+          </h3>
+
+          <p>
+            View enrollment statistics and course analytics.
+          </p>
+
+        </div>
+
+        <span class="action-arrow">
+          →
+        </span>
+
+      </a>
+
+
+      <!-- Grade Submission -->
+
+      <a
+        routerLink="/grade-submission"
+        class="action-card">
+
+        <div class="action-icon">
+          🎯
+        </div>
+
+        <div class="action-content">
+
+          <h3>
+            Grade Submission
+          </h3>
+
+          <p>
+            Submit and manage student grades.
+          </p>
+
+        </div>
+
+        <span class="action-arrow">
+          →
+        </span>
+
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       ANALYTICS
+  ========================== -->
+
+  <section class="analytics-section">
+
+    <div class="section-heading">
+
+      <div>
+
+        <span class="section-label">
+          PERFORMANCE
+        </span>
+
+        <h2>
+          Enrollment Analytics
+        </h2>
+
+        <p>
+          Monitor enrollment activity and approval trends.
+        </p>
+
+      </div>
+
+      <div class="analytics-badge">
+        📈 Real-time Analytics
+      </div>
+
+    </div>
+
+
+    @defer (on viewport; prefetch on idle) {
+
+      <div class="chart-container">
+
+        <tms-analytics-chart
+          [data]="store.entities()"
+        />
+
+      </div>
+
+    } @placeholder {
+
+      <div class="skeleton-chart">
+
+        <div class="skeleton-content">
+
+          <div class="skeleton-icon">
+            📊
+          </div>
+
+          <h3>
+            Analytics Ready
+          </h3>
+
+          <p>
+            Scroll down to load the enrollment analytics.
+          </p>
+
+        </div>
+
+      </div>
+
+    } @loading (minimum 500ms) {
+
+      <div class="loading-chart">
+
+        <div class="loading-spinner"></div>
+
+        <h3>
+          Loading Analytics
+        </h3>
+
+        <p>
+          Downloading chart engine...
+        </p>
+
+      </div>
+
+    } @error {
+
+      <div class="error-chart">
+
+        <div class="error-icon">
+          ⚠
+        </div>
+
+        <div>
+
+          <h3>
+            Analytics Unavailable
+          </h3>
+
+          <p>
+            Failed to load the analytics chart.
+            Please check your connection and try again.
+          </p>
+
+        </div>
+
+      </div>
+
+    }
+
+  </section>
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer class="dashboard-footer">
+
+    <div>
+
+      <strong>
+        🎓 TMS
+      </strong>
+
+      <span>
+        Training Management System
       </span>
-      <span class="kpi-label">Pending Approval</span>
+
     </div>
 
-  </div>
-</div>
+    <span>
+      Instructor Command Center
+    </span>
 
-<!-- Deferred chart -->
-<div class="chart-section">
-
-  @defer (on viewport; prefetch on idle) {
-
-    <tms-analytics-chart
-      [data]="store.entities()"
-    />
-
-  } @placeholder {
-
-    <div class="skeleton-chart">
-      Scroll down to view analytics...
-    </div>
-
-  } @loading (minimum 500ms) {
-
-    <div class="spinner">
-      Downloading chart engine...
-    </div>
-
-  } @error {
-
-    <p>Failed to load chart. Check your connection.</p>
-
-  }
+  </footer>
 
 </div>

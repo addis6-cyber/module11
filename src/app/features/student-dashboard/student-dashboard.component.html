@@ -1,75 +1,301 @@
 <div class="dashboard">
-  <h1>Welcome, {{ studentName() }}</h1>
 
-  <button (click)="logout()">
-        Logout
+  <!-- TOP HEADER -->
+
+  <header class="dashboard-header">
+
+
+<div class="welcome-section">
+  <div class="welcome-icon">🎓</div>
+
+  <div>
+    <p class="eyebrow">STUDENT PORTAL</p>
+    <h1>Welcome back, {{ studentName() }}!</h1>
+    <p class="subtitle">
+      Manage your courses and track your academic progress.
+    </p>
+  </div>
+</div>
+
+<button
+  type="button"
+  class="logout-button"
+  (click)="logout()">
+
+  <span>↪</span>
+  Logout
+
+</button>
+
+
+  </header>
+
+  <!-- ACADEMIC SUMMARY -->
+
+  <section class="stats-section">
+
+
+<div class="stat-card credits-card">
+
+  <div class="stat-icon">
+    📚
+  </div>
+
+  <div class="stat-content">
+    <span class="stat-label">Credits Earned</span>
+    <strong class="stat-value">
+      {{ earnedCredits() }}
+    </strong>
+    <span class="stat-description">
+      out of 120 credits
+    </span>
+  </div>
+
+</div>
+
+
+<div class="stat-card progress-card">
+
+  <div class="stat-icon">
+    🎯
+  </div>
+
+  <div class="stat-content">
+    <span class="stat-label">Academic Progress</span>
+
+    <strong class="stat-value">
+      {{ (earnedCredits() / 120 * 100).toFixed(0) }}%
+    </strong>
+
+    <div class="progress-bar">
+      <div
+        class="progress-fill"
+        [style.width.%]="
+          Math.min((earnedCredits() / 120) * 100, 100)
+        ">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="stat-card graduation-card">
+
+  <div class="stat-icon">
+    🎓
+  </div>
+
+  <div class="stat-content">
+
+    <span class="stat-label">
+      Graduation Status
+    </span>
+
+    <strong
+      class="status-value"
+      [class.ready]="
+        graduationStatus() === 'Eligible for Graduation'
+      ">
+
+      {{ graduationStatus() }}
+
+    </strong>
+
+    <span class="stat-description">
+      Keep up the great work!
+    </span>
+
+  </div>
+
+</div>
+
+
+  </section>
+
+  <!-- ACTION SECTION -->
+
+  <section class="action-section">
+
+
+<div class="action-content">
+
+  <div>
+    <span class="section-label">ACADEMIC ACTION</span>
+
+    <h2>Ready for your next class?</h2>
+
+    <p>
+      Register for a class and continue building
+      your academic progress.
+    </p>
+  </div>
+
+  <button
+    type="button"
+    class="register-class-button"
+    (click)="registerForClass()">
+
+    <span>＋</span>
+    Register for a Class
+
   </button>
 
-  <p>Credits Earned: {{ earnedCredits() }}</p>
+</div>
 
-  <p>Graduation Status: {{ graduationStatus() }}</p>
 
-  <button (click)="registerForClass()">
-    Register for a Class (+3 credits)
-  </button>
+  </section>
 
-<hr />
+  <!-- COURSE CATALOG -->
 
-<h2>Quick Navigation</h2>
+  <section class="courses-section">
 
-<nav class="quick-links">
 
-  <a routerLink="/enroll">
-    Enrollment Form
-  </a>
+<div class="section-heading">
 
-  <a routerLink="/enrollments">
-    Enrollment List
-  </a>
+  <div>
+    <span class="section-label">AVAILABLE COURSES</span>
 
-  <a routerLink="/dashboard">
-    Student Dashboard
-  </a>
+    <h2>Course Catalog</h2>
 
-  <a routerLink="/instructor">
-    Instructor Command Center
-  </a>
+    <p>
+      Explore the courses available for this term.
+    </p>
+  </div>
 
-  <a routerLink="/grade-submission">
-  Grade Submission
-</a>
+  <div class="course-count">
+    <span>Courses</span>
+    <strong>
+      {{ coursesResource.value()?.length ?? 0 }}
+    </strong>
+  </div>
 
-</nav>
+</div>
 
-<hr />
 
- <h2>Course Catalog</h2>
-
+<!-- LOADING -->
 @if (coursesResource.isLoading()) {
-  <div class="spinner">
-    Fetching courses from the server...
+
+  <div class="state-card loading-state">
+
+    <div class="spinner"></div>
+
+    <div>
+      <h3>Loading Courses</h3>
+      <p>
+        Fetching courses from the server...
+      </p>
+    </div>
+
   </div>
-} @else if (coursesResource.error()) {
-  <div class="error">
-    Could not load courses. Make sure your .NET API is running.
+
+}
+
+
+<!-- ERROR -->
+@else if (coursesResource.error()) {
+
+  <div class="state-card error-state">
+
+    <div class="state-icon">
+      ⚠
+    </div>
+
+    <div>
+      <h3>Unable to Load Courses</h3>
+
+      <p>
+        Could not load courses.
+        Make sure your .NET API is running.
+      </p>
+    </div>
+
   </div>
-} @else {
-  <div class="grid">
-    @for (course of coursesResource.value()!; track course.id) {
+
+}
+
+
+<!-- COURSES -->
+@else {
+
+  <div class="course-grid">
+
+    @for (
+      course of coursesResource.value()!;
+      track course.id
+    ) {
+
       <tms-course-card
         [course]="course"
         (enrollClicked)="handleEnroll($event)"
       />
+
     } @empty {
-      <p>No courses are available this term.</p>
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          📚
+        </div>
+
+        <h3>No Courses Available</h3>
+
+        <p>
+          There are no courses available this term.
+        </p>
+
+      </div>
+
     }
+
   </div>
+
 }
 
+
+<!-- LAST ENROLLMENT REQUEST -->
 @if (selectedCourse(); as picked) {
-  <p class="selection-hint" role="status">
-    Last enrollment request:
-    <strong>{{ picked.title }}</strong> ({{ picked.code }})
-  </p>
+
+  <div
+    class="selection-card"
+    role="status">
+
+    <div class="selection-icon">
+      ✓
+    </div>
+
+    <div>
+
+      <span>Last enrollment request</span>
+
+      <strong>
+        {{ picked.title }}
+      </strong>
+
+      <small>
+        Course Code: {{ picked.code }}
+      </small>
+
+    </div>
+
+  </div>
+
 }
+
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer class="dashboard-footer">
+
+<span>🎓 TMS</span>
+
+<span>
+  Training Management System
+</span>
+
+
+  </footer>
+
 </div>

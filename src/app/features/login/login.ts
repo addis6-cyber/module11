@@ -26,13 +26,17 @@ export class LoginComponent {
 
     this.auth.login(this.email, this.password).subscribe({
       next: response => {
+  this.auth.saveTokens(response);
+  this.isLoading = false;
 
-        this.auth.saveTokens(response);
-
-        this.isLoading = false;
-
-        this.router.navigate(['/dashboard']);
-      },
+  if (response.role === 'Instructor') {
+    this.router.navigate(['/instructor']);
+  } else if (response.role === 'Admin') {
+    this.router.navigate(['/admin/courses']);
+  } else {
+    this.router.navigate(['/dashboard']);
+  }
+},
 
       error: () => {
         this.error = 'Invalid email or password.';

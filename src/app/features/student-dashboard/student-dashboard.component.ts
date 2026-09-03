@@ -24,6 +24,7 @@ import { AuthService } from '../../core/auth/auth.service';
   styleUrl: './student-dashboard.component.scss'
 })
 export class StudentDashboardComponent {
+  Math = Math;
 
   private api = inject(CourseService);
   private auth = inject(AuthService);
